@@ -18,7 +18,7 @@ function generateRandomBoard(){
     vals = vals.sort(()=>Math.random()-0.5);
 
     Array.from(container.children).forEach((el,index)=>{
-        el.innerHTML = `<span>${vals[index]}</span>`
+        el.innerHTML = `<span id=${index}>${vals[index]}</span>`
         el.firstChild.style.display = 'none';
         el.addEventListener('click',()=>handleClick(el.firstChild));
     })
@@ -28,12 +28,12 @@ function generateRandomBoard(){
 function handleClick(el){
     el.style.display = 'initial';
     if(prev){
-        if(prev===el.innerText){
-            console.log('win');
+        if(prev.id!==el.id && prev.value===el.innerText){
             container.style.pointerEvents = 'none';
             restartBtn.style.display = 'initial';
             outcome.style.display = 'initial';
         }
+        else if(prev.id === el.id) return;
         else{
             prev = null;
             container.style.pointerEvents = 'none';
@@ -46,6 +46,9 @@ function handleClick(el){
         }
     }
     else{
-        prev = el.innerText;
+        prev = {
+            id: el.id,
+            value: el.innerText
+        }
     }
 }
